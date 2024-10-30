@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:price_hymns_app_v1/Res/hym_bank.dart';
-import 'hym_list_view.dart';
+import 'package:price_hymns_app_v1/Res/hymn_bank.dart';
+// import 'hymn_list_view.dart';
 
 class HymLyrics extends StatefulWidget {
   const HymLyrics({super.key});
