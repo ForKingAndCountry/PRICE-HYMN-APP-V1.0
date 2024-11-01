@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:price_hymns_app_v1/Res/hymn_bank.dart';
+import 'package:price_hymns_app_v1/util/exports.dart';
 // import 'hymn_list_view.dart';
 
-class HymLyrics extends StatefulWidget {
-  const HymLyrics({super.key});
+class HymnLyrics extends StatelessWidget {
+  final Map<String, dynamic> hymn;
 
-  @override
-  State<HymLyrics> createState() => _HymLyricsState();
-}
+  HymnLyrics({required this.hymn});
 
-class _HymLyricsState extends State<HymLyrics> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -24,10 +22,12 @@ class _HymLyricsState extends State<HymLyrics> {
                   TextButton(
                       onPressed: () {
                         Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => HymnSelect()),
-                  );
-                      }, child: Icon(Icons.arrow_back_sharp)),
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => HymListView()),
+                        );
+                      },
+                      child: Icon(Icons.arrow_back_sharp)),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Image.asset(
@@ -49,14 +49,14 @@ class _HymLyricsState extends State<HymLyrics> {
                     height: 25,
                     width: 50,
                     child: Text(
-                      '0001',
+                      hymn['number'],
                       style: TextStyle(color: Colors.white, fontSize: 18),
                       textAlign: TextAlign.center,
                     ),
                   ),
                   SizedBox(width: 10),
                   Text(
-                    'To Be Closed To Thee',
+                    hymn['title'],
                     style: TextStyle(fontSize: 18),
                   ),
                 ],
@@ -65,84 +65,23 @@ class _HymLyricsState extends State<HymLyrics> {
             SizedBox(
               height: 20,
             ),
-            SingleChildScrollView(
-              padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                Card(
+            Expanded(
+              child: SingleChildScrollView(
+                child: Card(
                   color: Colors.grey,
                   child: Padding(
                     padding: EdgeInsets.all(16),
                     child: Column(
                       children: [
-                        Text('Lord, I long to be close to Thee,'),
-                        Text('Ever be with Thee for my life to change,'),
-                        Text('There Thy thoughts and nature is known'),
-                        Text('And my life moulded to become like Thee.'),
-                        
-                        SizedBox(height: 30,),
-                        
-                        Text('O My God, to be close to Thee,'),
-                        Text('Is my cry and desire day long,'),
-                        Text('Nothing counts but to be with Thee'),
-                        Text('Then Thy face I see and Thy life received.'),
-                        
+                        ...hymn['verses'].map((verse) => Text(verse)).toList(),
+                        SizedBox(
+                          height: 30,
+                        ),
                       ],
                     ),
-                    ),
-                    
+                  ),
                 ),
-                SizedBox(width: 85,),
-                Card(
-                  color: Colors.grey,
-                  child: Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        Text('Lord, I long to be close to Thee,'),
-                        Text('Ever be with Thee for my life to change,'),
-                        Text('There Thy thoughts and nature is known'),
-                        Text('And my life moulded to become like Thee.'),
-                        
-                        SizedBox(height: 30,),
-                        
-                        Text('O My God, to be close to Thee,'),
-                        Text('Is my cry and desire day long,'),
-                        Text('Nothing counts but to be with Thee'),
-                        Text('Then Thy face I see and Thy life received.'),
-                        
-                      ],
-                    ),
-                    ),
-                    
-                ),
-                SizedBox(width: 85,),
-                Card(
-                  color: Colors.grey,
-                  child: Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        Text('Lord, I long to be close to Thee,'),
-                        Text('Ever be with Thee for my life to change,'),
-                        Text('There Thy thoughts and nature is known'),
-                        Text('And my life moulded to become like Thee.'),
-                        
-                        SizedBox(height: 30,),
-                        
-                        Text('O My God, to be close to Thee,'),
-                        Text('Is my cry and desire day long,'),
-                        Text('Nothing counts but to be with Thee'),
-                        Text('Then Thy face I see and Thy life received.'),
-                        
-                      ],
-                    ),
-                    ),
-                    
-                )
-              ],),
+              ),
             ),
             SizedBox(height: 20),
             Row(
@@ -153,9 +92,6 @@ class _HymLyricsState extends State<HymLyrics> {
                 Icon(Icons.play_circle_rounded),
               ],
             ),
-            
-            
-
           ],
         ),
       ),
