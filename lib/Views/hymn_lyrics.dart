@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:price_hymns_app_v1/Res/hymn_bank.dart';
 import 'package:price_hymns_app_v1/util/exports.dart';
+
 // import 'hymn_list_view.dart';
 
 class HymnLyrics extends StatelessWidget {
@@ -68,14 +67,42 @@ class HymnLyrics extends StatelessWidget {
             Expanded(
               child: SingleChildScrollView(
                 child: Card(
-                  color: Colors.grey,
+                  // color: Color.fromARGB(255, 127, 156, 180),
+                  shape: RoundedRectangleBorder(side: BorderSide.none),
+                  elevation: 0,
                   child: Padding(
-                    padding: EdgeInsets.all(16),
+                    padding: EdgeInsets.all(30),
                     child: Column(
                       children: [
-                        ...hymn['verses'].map((verse) => Text(verse)).toList(),
+                        ...hymn['verses']
+                            .expand((verse) => [
+                                  Text(
+                                    verse,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Roboto'
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(height: 20),
+                                  if (hymn.containsKey('chorus') &&
+                                      hymn['chorus'] is String &&
+                                      hymn['chorus'].isNotEmpty)
+                                    Text(
+                                      hymn['chorus'],
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontStyle: FontStyle.italic,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  SizedBox(
+                                    height: 20,
+                                  )
+                                ])
+                            .toList(),
                         SizedBox(
-                          height: 30,
+                          height: 20,
                         ),
                       ],
                     ),
@@ -84,13 +111,16 @@ class HymnLyrics extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.stop_circle_rounded),
-                Icon(Icons.pause_circle_rounded),
-                Icon(Icons.play_circle_rounded),
-              ],
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.stop_circle_rounded),
+                  Icon(Icons.pause_circle_rounded),
+                  Icon(Icons.play_circle_rounded),
+                ],
+              ),
             ),
           ],
         ),
