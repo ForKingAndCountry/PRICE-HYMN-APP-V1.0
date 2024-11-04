@@ -15,7 +15,7 @@ class HymListView extends StatefulWidget {
 
 class _HymListViewState extends State<HymListView> {
   Map<String, dynamic> _hymns = {};
-   @override
+  @override
   void initState() {
     super.initState();
     readJSON();
@@ -60,7 +60,7 @@ class _HymListViewState extends State<HymListView> {
                         color: Colors.white,
                       ),
                       height: 30.0,
-                      child:  Padding(
+                      child: Padding(
                         padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 10.0),
                         child: TextField(
                           decoration: InputDecoration(
@@ -88,31 +88,43 @@ class _HymListViewState extends State<HymListView> {
           ),
         ),
         body: Column(
-          children:[_hymns.isEmpty
-    ? Center(child: CircularProgressIndicator())
-    : Expanded(
-      child: ListView.builder(
-          itemCount: _hymns.length,
-          itemBuilder: (context, index) {
-            final hymnKey = _hymns.keys.elementAt(index);
-            final hymn = _hymns[hymnKey];
-            return ListTile(
-              title: Text(hymn['number']), 
-              subtitle: Text(hymn['title']),
-              // Add more details as needed
+          children: [
+            _hymns.isEmpty
+                ? Center(child: CircularProgressIndicator())
+                : Expanded(
+                    child: ListView.builder(
+                      itemCount: _hymns.length,
+                      itemBuilder: (context, index) {
+                        final hymnKey = _hymns.keys.elementAt(index);
+                        final hymn = _hymns[hymnKey];
+                        return ListTile(
+                          title: Row(
+                            children: [
+                              Container(
+                                  color: Color.fromARGB(188, 120, 178, 196),
+                                  width: 50,
+                                  child: Text(hymn['number'])),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(hymn['title']),
+                            ],
+                          ),
 
-              onTap: (){
-                Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => HymnLyrics(hymn: hymn),
-                            ),
-                          );
-              },
-            );
-          },
-        ),
-    ),
+                          // Add more details as needed
+
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HymnLyrics(hymn: hymn),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ),
 
             // Fixed footer with styled text and background
 
@@ -128,7 +140,7 @@ class _HymListViewState extends State<HymListView> {
                     height: 25,
                     width: 25,
                   ), // Replace with your logo path
-            
+
                   SizedBox(
                     width: 10,
                   ),
