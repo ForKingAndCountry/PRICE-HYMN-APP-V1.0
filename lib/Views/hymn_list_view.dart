@@ -15,20 +15,42 @@ class HymListView extends StatefulWidget {
 
 class _HymListViewState extends State<HymListView> {
   Map<String, dynamic> _hymns = {};
+  List<Map<String, dynamic>> _filteredHymns = [];
+  final TextEditingController _searchController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
     readJSON();
   }
 
-//Fetching content from the jsonfile
+  // Fetching content from the json file
   Future<void> readJSON() async {
     // Load the JSON file from the assets
     final jsonString = await rootBundle.loadString('assets/hymn_db.json');
     final data = await jsonDecode(jsonString);
     setState(() {
       _hymns = data["hymns"];
-      // print(_hymns);
+      _filteredHymns = _hymns.values.toList().cast<
+          Map<String, dynamic>>(); // Initialize filtered hymns with all hymns
+    });
+  }
+
+  void _runFilter(String enteredKeyword) {
+    List<Map<String, dynamic>> results = [];
+    if (enteredKeyword.isEmpty) {
+      results = _hymns.values.toList().cast<Map<String, dynamic>>();
+    } else {
+      results = _hymns.values
+          .where((hymn) => hymn['title']
+              .toLowerCase()
+              .contains(enteredKeyword.toLowerCase()))
+          .toList()
+          .cast<Map<String, dynamic>>();
+    }
+
+    setState(() {
+      _filteredHymns = results;
     });
   }
 
@@ -44,6 +66,7 @@ class _HymListViewState extends State<HymListView> {
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: const Color(0xFF006181),
+          elevation: 0,
           title: Column(
             children: [
               Row(
@@ -63,13 +86,15 @@ class _HymListViewState extends State<HymListView> {
                       child: Padding(
                         padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 10.0),
                         child: TextField(
+                          controller: _searchController,
+                          onChanged: (value) => _runFilter(value),
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             suffixIcon: Padding(
-                              padding: EdgeInsets.fromLTRB(0, 4, 8, 0),
+                              padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                               child: TextButton(
                                 onPressed: () {
-                                  readJSON();
+                                  _runFilter(_searchController.text);
                                 },
                                 child: Icon(
                                   Icons.search,
@@ -89,30 +114,75 @@ class _HymListViewState extends State<HymListView> {
         ),
         body: Column(
           children: [
+            Container(
+              decoration: BoxDecoration(
+                  border: Border(top: BorderSide.none),
+                  color: Color(0xFF006181)),
+              child: ButtonBar(
+                alignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => AllHymnsScreen()),
+                      // );
+                    },
+                    child: Text(
+                      'All',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => FavoritesScreen()),
+                      // );
+                    },
+                    child: Text(
+                      'Favorites',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => SearchScreen()),
+                      // );
+                    },
+                    child: Text(
+                      'Index',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             _hymns.isEmpty
                 ? Center(child: CircularProgressIndicator())
                 : Expanded(
                     child: ListView.builder(
-                      itemCount: _hymns.length,
+                      itemCount: _filteredHymns.length,
                       itemBuilder: (context, index) {
-                        final hymnKey = _hymns.keys.elementAt(index);
-                        final hymn = _hymns[hymnKey];
+                        final hymn = _filteredHymns[index];
                         return ListTile(
                           title: Row(
                             children: [
                               Container(
-                                  color: Color.fromARGB(188, 120, 178, 196),
+                                  color: Color.fromARGB(187, 78, 87, 90),
                                   width: 50,
-                                  child: Text(hymn['number'])),
+                                  child: Text(
+                                    hymn['number'],
+                                    style: TextStyle(color: Colors.white),
+                                  )),
                               SizedBox(
                                 width: 10,
                               ),
                               Text(hymn['title']),
                             ],
                           ),
-
-                          // Add more details as needed
-
                           onTap: () {
                             Navigator.push(
                               context,
@@ -125,25 +195,28 @@ class _HymListViewState extends State<HymListView> {
                       },
                     ),
                   ),
-
-            // Fixed footer with styled text and background
-
+                  SizedBox(
+                    height: 15,
+                  ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(5),
+                    child: Image.asset(
+                      'images/price-logo.jpg',
+                      height: 70,
+                      width: 70,
+                    ),
+                  ), // Replace with your logo path
+                   SizedBox(
+                    height: 15,
+                  ),
             Container(
               height: 50.0,
-              color: Colors.blueGrey[900], // Dark blue-grey background
+              color: Color(0xFF006181), // Dark blue-grey background
               child: Row(
                 mainAxisAlignment:
                     MainAxisAlignment.center, // Center the content
                 children: [
-                  Image.asset(
-                    'images/price-logo.jpg',
-                    height: 25,
-                    width: 25,
-                  ), // Replace with your logo path
-
-                  SizedBox(
-                    width: 10,
-                  ),
+                 
                   Text(
                     'Copyright © All Rights Reserved PRICE 2024',
                     style: TextStyle(

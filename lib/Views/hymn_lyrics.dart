@@ -79,7 +79,7 @@ class HymnLyrics extends StatelessWidget {
                                   Text(
                                     verse,
                                     style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: 'Roboto'
                                     ),
@@ -92,7 +92,7 @@ class HymnLyrics extends StatelessWidget {
                                     Text(
                                       hymn['chorus'],
                                       style: TextStyle(
-                                          fontSize: 13,
+                                          fontSize: 14,
                                           fontStyle: FontStyle.italic,
                                           fontWeight: FontWeight.bold),
                                     ),
