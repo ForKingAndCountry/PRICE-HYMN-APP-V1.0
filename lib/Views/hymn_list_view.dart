@@ -56,6 +56,9 @@ class _HymListViewState extends State<HymListView> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final screenWidth = mediaQuery.size.width;
+    final screenHeight = mediaQuery.size.height;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Hymn App',
@@ -64,52 +67,55 @@ class _HymListViewState extends State<HymListView> {
         useMaterial3: true,
       ),
       home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color(0xFF006181),
-          elevation: 0,
-          title: Column(
-            children: [
-              Row(
-                children: [
-                  const Icon(
-                    Icons.menu,
-                    color: Colors.white,
-                  ),
-                  SizedBox(width: 20.0),
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        color: Colors.white,
-                      ),
-                      height: 30.0,
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 10.0),
-                        child: TextField(
-                          controller: _searchController,
-                          onChanged: (value) => _runFilter(value),
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            suffixIcon: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-                              child: TextButton(
-                                onPressed: () {
-                                  _runFilter(_searchController.text);
-                                },
-                                child: Icon(
-                                  Icons.search,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(70),
+          child: AppBar(
+            backgroundColor: const Color(0xFF006181),
+            elevation: 0,
+            title: Column(
+              children: [
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.menu,
+                      color: Colors.white,
+                    ),
+                    SizedBox(width: 20.0),
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: Colors.white,
+                        ),
+                        height: screenHeight * 0.05,
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 10.0),
+                          child: TextField(
+                            controller: _searchController,
+                            onChanged: (value) => _runFilter(value),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              suffixIcon: Padding(
+                                padding: EdgeInsets.zero,
+                                child: TextButton(
+                                  onPressed: () {
+                                    _runFilter(_searchController.text);
+                                  },
+                                  child: Icon(
+                                    Icons.search,
+                                  ),
                                 ),
                               ),
+                              hintText: 'Search hymns',
                             ),
-                            hintText: 'Search hymns',
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
         body: Column(
@@ -130,7 +136,8 @@ class _HymListViewState extends State<HymListView> {
                     },
                     child: Text(
                       'All',
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(
+                          color: Colors.white, fontSize: screenHeight * 0.02),
                     ),
                   ),
                   TextButton(
@@ -142,7 +149,8 @@ class _HymListViewState extends State<HymListView> {
                     },
                     child: Text(
                       'Favorites',
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(
+                          color: Colors.white, fontSize: screenHeight * 0.02),
                     ),
                   ),
                   TextButton(
@@ -154,7 +162,8 @@ class _HymListViewState extends State<HymListView> {
                     },
                     child: Text(
                       'Index',
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(
+                          color: Colors.white, fontSize: screenHeight * 0.02),
                     ),
                   ),
                 ],
@@ -163,71 +172,75 @@ class _HymListViewState extends State<HymListView> {
             _hymns.isEmpty
                 ? Center(child: CircularProgressIndicator())
                 : Expanded(
-                    child: ListView.builder(
-                      itemCount: _filteredHymns.length,
-                      itemBuilder: (context, index) {
-                        final hymn = _filteredHymns[index];
-                        return ListTile(
-                          title: Row(
-                            children: [
-                              Container(
-                                  color: Color.fromARGB(187, 78, 87, 90),
-                                  width: 50,
-                                  child: Text(
-                                    hymn['number'],
-                                    style: TextStyle(color: Colors.white),
-                                  )),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(hymn['title']),
-                            ],
-                          ),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => HymnLyrics(hymn: hymn),
-                              ),
-                            );
-                          },
-                        );
-                      },
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 30.0),
+                      child: ListView.builder(
+                        itemCount: _filteredHymns.length,
+                        itemBuilder: (context, index) {
+                          final hymn = _filteredHymns[index];
+                          return ListTile(
+                            title: Row(
+                              children: [
+                                Container(
+                                    color: Color.fromARGB(187, 78, 87, 90),
+                                    width: screenWidth * 0.05,
+                                    height: screenHeight * 0.04,
+                                    child: Text(
+                                      hymn['number'],
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: screenHeight * 0.02),
+                                    )),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  hymn['title'],
+                                  style:
+                                      TextStyle(fontSize: screenHeight * 0.02),
+                                ),
+                              ],
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HymnLyrics(hymn: hymn),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
                     ),
                   ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(5),
-                    child: Image.asset(
-                      'images/price-logo.jpg',
-                      height: 70,
-                      width: 70,
-                    ),
-                  ), // Replace with your logo path
-                   SizedBox(
-                    height: 15,
-                  ),
-            Container(
-              height: 50.0,
-              color: Color(0xFF006181), // Dark blue-grey background
-              child: Row(
-                mainAxisAlignment:
-                    MainAxisAlignment.center, // Center the content
-                children: [
-                 
-                  Text(
-                    'Copyright © All Rights Reserved PRICE 2024',
-                    style: TextStyle(
-                      color: Colors.white, // White text color
-                      fontSize: 14.0,
-                      // Adjust font size as needed
-                    ),
-                  ),
-                ],
+            SizedBox(height: screenHeight * 0.06),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10.0),
+              child: Image.asset(
+                'images/price-logo.jpg',
+                height: screenHeight * 0.1,
+                width: screenWidth * 0.2,
               ),
-            ),
+            ), // Replace with your logo path
+            SizedBox(height: screenHeight * 0.06),
+            Expanded(
+              child: Container(
+                color: Color(0xFF006181),
+                height: screenHeight * 0.03, // Adjust based on screen height
+                width: double.infinity,
+                child: Center(
+                  child: Text(
+                    'Copyright all rights reserved PRICE 2024',
+                    style: TextStyle(
+                      fontSize: screenWidth * 0.04,
+                      color: Colors.white,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),

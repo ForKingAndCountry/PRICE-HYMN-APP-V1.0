@@ -9,6 +9,10 @@ class HymnLyrics extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final screenWidth = mediaQuery.size.width;
+    final screenHeight = mediaQuery.size.height;
+
     return SafeArea(
       child: Scaffold(
         body: Column(
@@ -19,20 +23,20 @@ class HymnLyrics extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => HymListView()),
-                        );
-                      },
-                      child: Icon(Icons.arrow_back_sharp)),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => HymListView()),
+                      );
+                    },
+                    child: Icon(Icons.arrow_back_sharp),
+                  ),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Image.asset(
                       'images/price-logo.jpg',
-                      height: 100,
-                      width: 100,
+                      height: screenHeight * 0.1,
+                      width: screenWidth * 0.2,
                     ),
                   ),
                   Icon(Icons.music_note_outlined),
@@ -45,18 +49,21 @@ class HymnLyrics extends StatelessWidget {
                 children: [
                   Container(
                     color: Color.fromARGB(255, 26, 24, 24),
-                    height: 25,
-                    width: 50,
+                    height: screenWidth * 0.07,
+                    width: screenHeight * 0.06,
                     child: Text(
                       hymn['number'],
-                      style: TextStyle(color: Colors.white, fontSize: 18),
+                      style: TextStyle(
+                          color: Colors.white, fontSize: screenHeight * 0.03),
                       textAlign: TextAlign.center,
                     ),
                   ),
                   SizedBox(width: 10),
                   Text(
                     hymn['title'],
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(
+                        fontSize: screenHeight * 0.03,
+                        fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -79,30 +86,29 @@ class HymnLyrics extends StatelessWidget {
                                   Text(
                                     verse,
                                     style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'Roboto'
-                                    ),
+                                        fontSize: screenHeight * 0.03,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Roboto'),
                                     textAlign: TextAlign.center,
                                   ),
-                                  SizedBox(height: 20),
+                                  SizedBox(height: screenHeight * 0.05),
                                   if (hymn.containsKey('chorus') &&
                                       hymn['chorus'] is String &&
                                       hymn['chorus'].isNotEmpty)
                                     Text(
                                       hymn['chorus'],
                                       style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: screenHeight * 0.023,
                                           fontStyle: FontStyle.italic,
                                           fontWeight: FontWeight.bold),
                                     ),
                                   SizedBox(
-                                    height: 20,
+                                    height: screenHeight * 0.05,
                                   )
                                 ])
                             .toList(),
                         SizedBox(
-                          height: 20,
+                          height: screenHeight * 0.05,
                         ),
                       ],
                     ),

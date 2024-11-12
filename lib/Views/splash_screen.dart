@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 25, 20, 0),
+              padding: const EdgeInsets.fromLTRB(20, 25, 35, 0),
               child: Row(
                 children: [
                   Column(
@@ -44,16 +44,20 @@ class _SplashScreenState extends State<SplashScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text('Peace House Research &'),
-                      Text('Innovation Center of Excellence'),
-                      Text('(PRICE)')
+                      Text('Peace House Research &', style: TextStyle(
+                        fontSize: screenWidth * 0.04
+                      ),),
+                      Text('Innovation Center of Excellence', style: TextStyle(
+                        fontSize: screenWidth * 0.04),),
+                      Text('(PRICE)',  style: TextStyle(
+                        fontSize: screenWidth * 0.04))
                     ],
                   )
                 ],
               ),
             ),
             SizedBox(
-              height: screenHeight * 0.2, // Adjust based on screen height
+              height: screenHeight * 0.15, // Adjust based on screen height
             ),
             Center(
               child: Flexible(
@@ -73,18 +77,18 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ),
             SizedBox(
-              height: screenHeight * 0.2, // Adjust based on screen height
+              height: screenHeight * 0.06 // Adjust based on screen height
             ),
             Expanded(
               child: Container(
                 color: Color(0xFF006181),
-                height: screenHeight * 0.1, // Adjust based on screen height
+                height: screenHeight * 0.03, // Adjust based on screen height
                 width: double.infinity,
                 child: Center(
                   child: Text(
                     'Copyright all rights reserved PRICE 2024',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: screenWidth * 0.04,
                       color: Colors.white,
                     ),
                     textAlign: TextAlign.center,
